@@ -8,14 +8,16 @@ var coffee        = require('gulp-coffee');
 var jade          = require('gulp-jade');
 // var minifyHTML = require('gulp-minify-html');
 
+var localPort = 8080;
 var paths = {
-    styles: "sass/**/*.scss",
-    scripts: "coffee/**/*.coffee",
-    jade: "jade/**/*.jade"
+    styles: "sass/**/*.sass", style_output: "css",
+    scripts: "coffee/**/*.coffee", scripts_output: "js",
+    jade: "jade/**/*.jade", jade_output: "./"
 };
 
 gulp.task('webserver', function () {
     connect.server({
+        port: localPort,
         livereload: true
     });
 });
@@ -27,7 +29,7 @@ gulp.task('styles', function () {
             // style: 'compressed'
         }))
         // .pipe(cssmin({keepSpecialComments: 0}))
-        .pipe(gulp.dest("css"))
+        .pipe(gulp.dest(paths.style_output))
         .pipe(connect.reload());
 });
 
@@ -36,7 +38,7 @@ gulp.task('scripts', function () {
         .pipe(plumber())
         .pipe(coffee())
         // .pipe(uglify())
-        .pipe(gulp.dest("js"))
+        .pipe(gulp.dest(paths.scripts_output))
         .pipe(connect.reload());
 });
 
@@ -47,7 +49,7 @@ gulp.task('jade', function () {
             pretty: true
         }))
         // .pipe(minifyHTML())
-        .pipe(gulp.dest("./"))
+        .pipe(gulp.dest(path.jade_output))
         .pipe(connect.reload());
 });
 
