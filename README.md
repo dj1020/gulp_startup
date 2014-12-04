@@ -23,3 +23,4 @@ If you want, change ouput path in **gulpfile.js** and execute **gulp** again.
 4. https://laracasts.com/lessons/gulp-this
 5. http://www.smashingmagazine.com/2014/06/11/building-with-gulp/
 6. http://code.tutsplus.com/tutorials/gulp-as-a-development-web-server--cms-20903
+7. Gulp with Browser Sync: http://www.browsersync.io/docs/gulp/
