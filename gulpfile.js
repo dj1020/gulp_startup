@@ -1,5 +1,5 @@
 var gulp          = require('gulp');
-var connect       = require('gulp-connect');
+var browserSync   = require('browser-sync');
 var plumber       = require('gulp-plumber');
 var sass          = require('gulp-ruby-sass');
 // var cssmin     = require('gulp-cssmin');
@@ -10,15 +10,17 @@ var jade          = require('gulp-jade');
 
 var localPort = 8080;
 var paths = {
-    styles: "sass/**/*.sass", style_output: "css",
+    styles: "sass/**/*.s?ss", style_output: "css",
     scripts: "coffee/**/*.coffee", scripts_output: "js",
     jade: "jade/**/*.jade", jade_output: "./"
 };
 
-gulp.task('webserver', function () {
-    connect.server({
-        port: localPort,
-        livereload: true
+gulp.task('browserSyncServer', function () {
+    browserSync({
+        server: {
+            baseDir: "./"
+        },
+        port: localPort
     });
 });
 
@@ -29,8 +31,7 @@ gulp.task('styles', function () {
             // style: 'compressed'
         }))
         // .pipe(cssmin({keepSpecialComments: 0}))
-        .pipe(gulp.dest(paths.style_output))
-        .pipe(connect.reload());
+        .pipe(gulp.dest(paths.style_output));
 });
 
 gulp.task('scripts', function () {
@@ -38,8 +39,7 @@ gulp.task('scripts', function () {
         .pipe(plumber())
         .pipe(coffee())
         // .pipe(uglify())
-        .pipe(gulp.dest(paths.scripts_output))
-        .pipe(connect.reload());
+        .pipe(gulp.dest(paths.scripts_output));
 });
 
 gulp.task('jade', function () {
@@ -49,14 +49,13 @@ gulp.task('jade', function () {
             pretty: true
         }))
         // .pipe(minifyHTML())
-        .pipe(gulp.dest(paths.jade_output))
-        .pipe(connect.reload());
+        .pipe(gulp.dest(paths.jade_output));
 });
 
 gulp.task('watch', function() {
-    gulp.watch(paths.scripts, ['scripts']);
-    gulp.watch(paths.styles, ['styles']);
-    gulp.watch(paths.jade, ['jade']);
+    gulp.watch(paths.scripts, ['scripts', browserSync.reload]);
+    gulp.watch(paths.styles, ['styles', browserSync.reload]);
+    gulp.watch(paths.jade, ['jade', browserSync.reload]);
 });
 
-gulp.task('default', ['webserver', 'styles', 'scripts', 'jade', 'watch']);
+gulp.task('default', ['browserSyncServer', 'styles', 'scripts', 'jade', 'watch']);
