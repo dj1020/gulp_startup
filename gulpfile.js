@@ -49,7 +49,7 @@ gulp.task('jade', function () {
             pretty: true
         }))
         // .pipe(minifyHTML())
-        .pipe(gulp.dest(path.jade_output))
+        .pipe(gulp.dest(paths.jade_output))
         .pipe(connect.reload());
 });
 
